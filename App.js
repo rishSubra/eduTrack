@@ -9,7 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import { Image, Platform } from 'react-native';
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Modal, TextInput, Picker, Switch } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Modal, TextInput, Switch } from 'react-native';
 
 function DetailsScreen() {
   return (
@@ -40,19 +40,53 @@ function HomeScreen({ navigation }) {
   );
 }
 
-function PhotoScreen({ navigation }){
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-     <View style={styles.background}>
-      <Text style={styles.headline_text}>Grid View Images</Text>
-      <Text style={styles.explore_text}>
-        Click on an image to view in full screen mode
-      </Text>
 
-      {/* Basic Usage */}
-      <GridImageView data={['/Users/rishabsubramaniyan/Desktop/fb2.jpg','/Users/rishabsubramaniyan/Desktop/fb3.jpg','/Users/rishabsubramaniyan/Desktop/fb.jpg','/Users/rishabsubramaniyan/Desktop/fb4.jpg','/Users/rishabsubramaniyan/Desktop/fb6.jpg']} />
-     </View>
-    </View>
+
+
+
+
+function PhotoScreen({ navigation }) {
+  const [assets, setAssets] = useState([
+    '/Users/rishabsubramaniyan/Desktop/fb2.jpg',
+    '/Users/rishabsubramaniyan/Desktop/fb3.jpg',
+    '/Users/rishabsubramaniyan/Desktop/fb.jpg',
+    '/Users/rishabsubramaniyan/Desktop/fb4.jpg',
+    '/Users/rishabsubramaniyan/Desktop/fb6.jpg'
+  ]);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setAssets([...assets, result.uri]);
+    }
+  }
+
+  return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.background}>
+          <Text style={styles.headline_text}>Grid View Images</Text>
+          <Text style={styles.explore_text}>
+            Click on an image to view in full screen mode
+          </Text>
+
+          {/* Display the grid of images */}
+          <GridImageView data={assets} />
+
+          {/* Add a button to allow the user to add new photos */}
+          <View>
+            <Button
+                title="Add Photos"
+                onPress={pickImage}
+            />
+          </View>
+        </View>
+      </View>
   );
 };
 
@@ -112,7 +146,7 @@ export default function ImagePickerExample() {
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen name="Calender" component={CalenderStackScreen} />
         
-        <Tab.Screen name="Attendence" component={AttendanceStackScreen} />
+        <Tab.Screen name="Attendance" component={AttendanceStackScreen} />
         <Tab.Screen name="Photos" component={PhotoStackScreen} />
         <Tab.Screen name="Settings" component={HomeStackScreen} />
         
@@ -143,8 +177,31 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'red',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: 'pink',
+    marginTop: 10,
+  },
+  button: {
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'red',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -244,13 +301,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 10,
     },
-    input: {
-    borderWidth: 1,
-    borderColor: 'black',
-    padding: 10,
-    fontSize: 16,
-    marginBottom: 10,
-    },
+    // input: {
+    // borderWidth: 1,
+    // borderColor: 'black',
+    // padding: 10,
+    // fontSize: 16,
+    // marginBottom: 10,
+    // },
     reportContainer: {
     borderWidth: 1,
     borderColor: 'black',
@@ -281,6 +338,10 @@ const EventCalendar = () => {
   const handleAddEvent = (day) => {
     setSelectedDate(day);
     setModalVisible(true);
+    const event = events[day] || {};
+    setStartTime(event.startTime || '');
+    setEndTime(event.endTime || '');
+    setEventDescription(event.eventDescription || '');
   };
 
   const handleSaveEvent = () => {

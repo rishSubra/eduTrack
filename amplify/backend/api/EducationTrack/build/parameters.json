@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "EducationTrack",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-educationtrack-staging-225929-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/b2c950bb324a225c384b1ad14f93d08575bde32a"
+}
