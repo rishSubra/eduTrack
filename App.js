@@ -40,18 +40,8 @@ function HomeScreen({ navigation }) {
   );
 }
 
-
-
-
-
-
 function PhotoScreen({ navigation }) {
   const [assets, setAssets] = useState([
-    '/Users/rishabsubramaniyan/Desktop/fb2.jpg',
-    '/Users/rishabsubramaniyan/Desktop/fb3.jpg',
-    '/Users/rishabsubramaniyan/Desktop/fb.jpg',
-    '/Users/rishabsubramaniyan/Desktop/fb4.jpg',
-    '/Users/rishabsubramaniyan/Desktop/fb6.jpg'
   ]);
 
   const pickImage = async () => {
@@ -277,6 +267,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 10,
     marginVertical: 10,
     paddingHorizontal: 10,
     fontSize: 16,
@@ -299,7 +290,7 @@ const styles = StyleSheet.create({
     },
     label: {
     fontSize: 16,
-    marginVertical: 10,
+    marginTop: 10,
     },
     // input: {
     // borderWidth: 1,
@@ -314,18 +305,19 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 10,
     },
+    inputContainer: {
+      marginHorizontal: 10,
+      
+    },
+    subTitle: {
+      fontSize: 15,
+    },
      
 
 
 });
 
 ////////////////////////////////////
-
-
-
-
-
-
 
 const EventCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -456,7 +448,7 @@ const AttendancePage = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.inputContainer}>
       <Text style={styles.label}>Student Name:</Text>
       <TextInput style={styles.input} value={studentName} onChangeText={setStudentName} />
 
@@ -471,6 +463,8 @@ const AttendancePage = () => {
   );
 };
 
+// Attendance Screen
+
 const ReportScreen = ({ absences }) => (
   <View style={styles.container}>
     <Text style={styles.header}>Absence Report:</Text>
@@ -484,6 +478,8 @@ const ReportScreen = ({ absences }) => (
     ))}
   </View>
 );
+
+// Profile Component
 
 const ProfilePage = () => {
   const [profileImage, setProfileImage] = useState(null);
@@ -507,39 +503,43 @@ const ProfilePage = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.profileImageContainer}>
-        {profileImage ? (
-          <Image source={{uri: profileImage}} style={styles.profileImage} />
-        ) : (
-          <TouchableOpacity onPress={pickImage}>
-            <Text>{" "}{" "}{" "}{" "}{" "}{" "}{" "}{" "}Photo</Text>
-          </TouchableOpacity>
-        )}
+      <View style={styles.inputContainer}>
+        <View style={styles.profileImageContainer}>
+          {profileImage ? (
+            <Image source={{uri: profileImage}} style={styles.profileImage} />
+          ) : (
+            <TouchableOpacity style = {styles.profileImageContainer} onPress={pickImage}>
+              <Text>{' '}{' '}{' '}{' '}{' '}{' '}{' '}{' '}Add</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <Text>First Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setFirstName(text)}
+          value={firstName}
+        />
+        <Text>Last Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setLastName(text)}
+          value={lastName}
+        />
+        <Text>Email</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setEmail(text)}
+          value={email}
+        />
+        <Text>Bio</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setBio(text)}
+          value={bio}
+        />
       </View>
-      <Text>First Name</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setFirstName(text)}
-        value={firstName}
-      />
-      <Text>Last Name</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setLastName(text)}
-        value={lastName}
-      />
-      <Text>Email</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setEmail(text)}
-        value={email}
-      />
-      <Text>Bio</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => setBio(text)}
-        value={bio}
-      />
+
       <View style={styles.notificationContainer}>
         <Text style={styles.notificationText}>Camera Access</Text>
         <Switch
